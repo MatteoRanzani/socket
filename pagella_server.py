@@ -4,7 +4,26 @@ from threading import Thread
 
 SERVER_ADDRESS = '127.0.0.1'
 SERVER_PORT = 22224
-BUFFER_SIZE = 1024 
+BUFFER_SIZE = 1024
+
+
+diz = {   
+    'Antonio Barbera': [   ['Matematica', 8, 1],
+                           ['Italiano', 6, 1],
+                           ['Inglese', 9.5, 0],
+                           ['Storia', 8, 2],
+                           ['Geografia', 8, 1]],
+    'Giuseppe Gullo': [   ['Matematica', 9, 0],
+                          ['Italiano', 7, 3],
+                          ['Inglese', 7.5, 4],
+                          ['Storia', 7.5, 4],
+                          ['Geografia', 5, 7]],
+    'Nicola Spina': [   ['Matematica', 7.5, 2],
+                        ['Italiano', 6, 2],
+                        ['Inglese', 4, 3],
+                        ['Storia', 8.5, 2],
+                        ['Geografia', 8, 2]]
+}
 
 def ricevi_comandi(sock_service, addr_client):
     with sock_service as sock_client:
@@ -34,33 +53,3 @@ def ricevi_comandi(sock_service, addr_client):
             sock_client.sendall(str(risultato).encode())
             print(risultato)
     print("Connesione chiusa")    
-        
-
-
-def ricevi_connessioni(sock_listen):
-    print("In attesa di connesioni")
-    while True:
-        sock_service, addr_client = sock_listen.accept()
-        print("\nConnessione ricevuta da %s" % str(addr_client))
-        print("Creo un thread per servire le richieste")
-        try:
-            Thread(target=ricevi_comandi, args=(sock_service, addr_client)).start()
-        except:
-            print("Il thread non si avvia")
-            sock_listen.close()
-
-def avvia_server(SERVER_ADDRESS, SERVER_PORT):
-    try:
-        sock_listen=socket.socket()
-        sock_listen.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock_listen.bind((SERVER_ADDRESS, SERVER_PORT))
-        sock_listen.listen(5)
-        print("Server in ascolto")
-    except socket.error as errore:
-        print(f"Qualcosa è andato storto \n{errore}")
-    ricevi_connessioni(sock_listen)
-
-
-if __name__ == '__main__':
-    avvia_server(SERVER_ADDRESS, SERVER_PORT)
-print("Termina")

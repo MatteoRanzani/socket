@@ -1,7 +1,7 @@
 import socket
 import json
 SERVER_IP = "127.0.0.1"
-SERVER_PORT = 5005
+SERVER_PORT = 22018
 BUFFER_SIZE = 1024
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock_server:
